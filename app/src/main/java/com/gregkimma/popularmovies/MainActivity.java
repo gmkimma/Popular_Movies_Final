@@ -25,16 +25,20 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG = "MainActivity";
     private List<Movie> mMovieList = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GetMovieJSONData jsonData = new GetMovieJSONData(getString(R.string.pref_sort_popular_value), getString(R.string.api_key));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        String sort = prefs.getString(getString(R.string.pref_sort),
+                getString(R.string.pref_sort_popular_value));
+
+        GetMovieJSONData jsonData = new GetMovieJSONData(sort, getString(R.string.api_key));
         jsonData.execute();
 
         mMovieList = jsonData.getMovies();
-
 
         GridView gridview = (GridView) findViewById(R.id.gridView);
         gridview.setAdapter(new ImageAdapter(this));
@@ -47,14 +51,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        updateMovies();
+
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        updateMovies();
     }
 
     @Override
@@ -124,15 +127,6 @@ public class MainActivity extends AppCompatActivity {
 
             return imageView;
         }
-    }
-
-    private void updateMovies() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        String sort = prefs.getString(getString(R.string.pref_sort),
-                getString(R.string.pref_sort_popular_value));
-
-        GetMovieJSONData processMovies = new GetMovieJSONData(sort, getString(R.string.api_key));
-        processMovies.execute();
     }
 }
 
