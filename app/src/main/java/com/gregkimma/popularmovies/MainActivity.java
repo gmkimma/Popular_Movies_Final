@@ -2,41 +2,27 @@ package com.gregkimma.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public Integer [] mThumbIds = {
-            R.drawable.interstellar, R.drawable.chappie,
-            R.drawable.interstellar, R.drawable.interstellar,
-            R.drawable.interstellar, R.drawable.interstellar,
-            R.drawable.interstellar, R.drawable.interstellar,
-            R.drawable.interstellar, R.drawable.interstellar,
-            R.drawable.interstellar, R.drawable.interstellar,
-            R.drawable.interstellar, R.drawable.interstellar,
-            R.drawable.interstellar, R.drawable.interstellar,
-            R.drawable.interstellar, R.drawable.interstellar,
-            R.drawable.interstellar, R.drawable.interstellar,
-            R.drawable.interstellar, R.drawable.interstellar
-    };
-
     private static final String LOG = "MainActivity";
     private List<Movie> mMovieList = new ArrayList<>();
-    private RecyclerView mRecyclerView;
-    private MovieRecyclerViewAdapter mMovieRecyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +32,28 @@ public class MainActivity extends AppCompatActivity {
         GetMovieJSONData jsonData = new GetMovieJSONData(getString(R.string.pref_sort_popular_value), getString(R.string.api_key));
         jsonData.execute();
 
+        mMovieList = jsonData.getMovies();
+
 
         GridView gridview = (GridView) findViewById(R.id.gridView);
         gridview.setAdapter(new ImageAdapter(this));
 
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, Details.class);
-                intent.putExtra("image", mThumbIds[position]);
-                startActivity(intent);
-            }
-        });
+//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                Intent intent = new Intent(MainActivity.this, Details.class);
+//                intent.putExtra("image", mThumbIds[position]);
+//                startActivity(intent);
+//            }
+//        });
 
+        updateMovies();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateMovies();
     }
 
     @Override
@@ -84,31 +80,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class ProcessMovies extends GetMovieJSONData {
-
-        public ProcessMovies(String sortCriteria, String apiKey) {
-            super(sortCriteria, apiKey);
-        }
-
-        public void execute() {
-            super.execute();
-            ProcessData processData = new ProcessData();
-            processData.execute();
-        }
-
-        public class ProcessData extends DownloadJsonData {
-
-            protected void onPostExecute(String webData) {
-                super.onPostExecute(webData);
-                mMovieRecyclerViewAdapter = new MovieRecyclerViewAdapter(MainActivity.this, getMovies());
-                mRecyclerView.setAdapter(mMovieRecyclerViewAdapter);
-            }
-        }
-
-    }
-
 
     public class ImageAdapter extends BaseAdapter {
+
         private Context mContext;
 
         public ImageAdapter(Context c) {
@@ -116,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public int getCount() {
-            return mThumbIds.length;
+            return mMovieList.size();
         }
 
         public Object getItem(int position) {
@@ -138,8 +112,26 @@ public class MainActivity extends AppCompatActivity {
                 imageView = (ImageView) convertView;
             }
 
-            imageView.setImageResource(mThumbIds[position]);
+            Movie movie = mMovieList.get(position);
+            String url = movie.getImage();
+
+            Picasso.with(mContext)
+                    .load(url)
+                    .placeholder(R.drawable.placeholder)
+                    .fit()
+                    .into(imageView);
+
             return imageView;
         }
     }
+
+    private void updateMovies() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        String sort = prefs.getString(getString(R.string.pref_sort),
+                getString(R.string.pref_sort_popular_value));
+
+        GetMovieJSONData processMovies = new GetMovieJSONData(sort, getString(R.string.api_key));
+        processMovies.execute();
+    }
 }
+

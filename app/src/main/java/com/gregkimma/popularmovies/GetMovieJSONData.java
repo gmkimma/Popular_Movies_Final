@@ -25,7 +25,7 @@ public class GetMovieJSONData extends GetRawData{
     public void execute() {
         super.setRawUrl(mDestinationUri.toString());
         DownloadJsonData downloadJsonData = new DownloadJsonData();
-        Log.v(TAG, "Built URI = " + mDestinationUri.toString());
+//        Log.v(TAG, "Built URI = " + mDestinationUri.toString());
         downloadJsonData.execute(mDestinationUri.toString());
     }
 
@@ -72,9 +72,9 @@ public class GetMovieJSONData extends GetRawData{
                 this.mMovies.add(movieObject);
             }
 
-            for (Movie singleMovie : mMovies) {
-                Log.v(TAG,singleMovie.toString());
-            }
+//            for (Movie singleMovie : mMovies) {
+//                Log.v(TAG,singleMovie.toString());
+//            }
         } catch (JSONException jsone) {
             jsone.printStackTrace();
             Log.e(TAG, "Error processing JSON data");
