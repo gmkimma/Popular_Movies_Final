@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG = "MainActivity";
     private List<Movie> mMovieList = new ArrayList<>();
+    int restart = 0;
 
 
     @Override
@@ -50,14 +51,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        ImageAdapter adapter = new ImageAdapter(this);
+        adapter.notifyDataSetChanged();
+        if (restart == 1) {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+            restart=0;
+        }
+        restart++;
     }
 
     @Override

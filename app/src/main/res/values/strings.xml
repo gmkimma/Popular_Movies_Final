@@ -7,6 +7,7 @@
     <!-- Insert your API key -->
     <string name="api_key"></string>
 
+
     <!-- Content Description -->
     <string name="movie_image">movie_image</string>
 
