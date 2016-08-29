@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+
+//This class is to display the movie details
 public class Details extends AppCompatActivity {
 
     @Override

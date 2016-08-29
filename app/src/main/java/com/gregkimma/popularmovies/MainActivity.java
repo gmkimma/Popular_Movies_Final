@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG = "MainActivity";
     private List<Movie> mMovieList = new ArrayList<>();
+    int restart = 0;
 
 
     @Override
@@ -55,9 +56,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //This will refresh the main screen when a new sort order is selected
     @Override
     protected void onStart() {
         super.onStart();
+        if (restart == 1) {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+            restart = 0;
+        }
+        restart++;
     }
 
     @Override
@@ -84,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    //This class is the adapter used to input the views into the grid on the main screen
     public class ImageAdapter extends BaseAdapter {
 
         private Context mContext;

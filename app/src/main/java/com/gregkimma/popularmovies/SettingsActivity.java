@@ -6,6 +6,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
 
+
+//This class is used to change the sorting order of the movies on the main screen
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 

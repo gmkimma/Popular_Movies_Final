@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//This class is used to obtain the JSON data from the website, and then process the results
 public class GetMovieJSONData extends GetRawData{
 
     private String TAG = GetMovieJSONData.class.getSimpleName();

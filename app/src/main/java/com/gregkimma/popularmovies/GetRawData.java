@@ -10,8 +10,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+
 enum DownloadStatus {IDLE, PROCESSING, NOT_INITIALIZED, FAILED_OR_EMPTY, OK}
 
+//This class is used to download the JSON data from a website
 public class GetRawData {
     private String TAG = GetRawData.class.getSimpleName();
     private String mRawUrl;

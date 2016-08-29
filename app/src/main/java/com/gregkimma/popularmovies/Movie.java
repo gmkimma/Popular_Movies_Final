@@ -2,6 +2,8 @@ package com.gregkimma.popularmovies;
 
 import java.io.Serializable;
 
+
+//This class is used to store all the data for a specific movie from the website
 public class Movie implements Serializable {
 
     private static final long serialVersionUID = 1L;
