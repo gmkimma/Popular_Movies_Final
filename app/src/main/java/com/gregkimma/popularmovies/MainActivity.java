@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
             Picasso.with(mContext)
                     .load(url)
                     .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
                     .fit()
                     .into(imageView);
 
