@@ -51,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     //This will refresh the main screen when a new sort order is selected
@@ -131,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
             Picasso.with(mContext)
                     .load(url)
                     .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
                     .fit()
                     .into(imageView);
 
