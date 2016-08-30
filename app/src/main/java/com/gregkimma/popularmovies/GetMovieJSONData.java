@@ -70,7 +70,12 @@ public class GetMovieJSONData extends GetRawData{
                 String releaseDate = jsonMovie.getString(MOVIE_RELEASE_DATE);
                 String posterUrl = jsonMovie.getString(MOVIE_POSTER_URL);
 
-                Movie movieObject = new Movie(title, synopsis, rating, releaseDate, posterUrl);
+                Movie movieObject = new Movie();
+                movieObject.setTitle(title);
+                movieObject.setSynopsis(synopsis);
+                movieObject.setRating(rating);
+                movieObject.setReleaseDate(releaseDate);
+                movieObject.setImage(posterUrl);
                 this.mMovies.add(movieObject);
             }
 

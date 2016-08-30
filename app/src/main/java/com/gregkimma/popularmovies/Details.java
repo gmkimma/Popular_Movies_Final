@@ -18,7 +18,7 @@ public class Details extends AppCompatActivity {
         setContentView(R.layout.activity_details);
 
         Intent intent = getIntent();
-        Movie movie = (Movie) intent.getSerializableExtra("MOVIE_TRANSFER");
+        Movie movie = intent.getParcelableExtra("MOVIE_TRANSFER");
 
         TextView movieTitle = (TextView) findViewById(R.id.movie_title);
         movieTitle.setText(movie.getTitle());
